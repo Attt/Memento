@@ -1,3 +1,4 @@
+import pywinctl as pwc
 import Xlib.display
 import av
 import fractions
@@ -21,6 +22,11 @@ CACHE_PATH = os.path.join(os.environ["HOME"], ".cache", "memento")
 
 
 def get_active_window():
+    if op_platform == 'Darwin': # macOS
+        window_title = pwc.getActiveWindowTitle()
+        if window_title:
+            return window_title
+        return "None"
     display = Xlib.display.Display()
     window = display.get_input_focus().focus
     if isinstance(window, Xlib.xobject.drawable.Window):
